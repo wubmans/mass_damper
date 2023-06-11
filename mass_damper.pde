@@ -1,29 +1,29 @@
 ArrayList<MSDSystem> systems = new ArrayList<MSDSystem>();
 
 int numberSegments = 6;
-int numberSystems = 200;
-PImage circleImage; 
+int numberSystems = 150;
+
+/**********************************
+
+
+
+grass
+
+
+***********************************/
 
 void setup()
 {
-    circleImage = loadImage("./gear.png");
-
-  //  system = new MSDSystem();
 
     size(800, 800);
-    //ellipse(80.0f, 80.0f, 30.0f, 30.0f);
 
     for (int j = 0; j < numberSystems; j++)
     {
         MSDSystem system = new MSDSystem();
 
-
-
         for(int i = 0; i < numberSegments; i++)
         {
             Segment segment = new Segment();
-            //segment.a = random(3) * 4;
-            //segment.F = 5;
             segment.length = 50;
             segment.F = random(1) * 0.2f;
             system.addSegment(segment);
@@ -33,7 +33,6 @@ void setup()
         systems.add(system);
 
     }
-
   
 }
 
@@ -44,12 +43,13 @@ void draw()
     for (MSDSystem system : systems)
     {
         system.update();
-        system.renderAsLines(); 
+        system.render(); 
     }
 
 }
 
-void mouseMoved() {
+void mouseMoved() 
+{
     
     for (MSDSystem system : systems)
     {
@@ -59,6 +59,12 @@ void mouseMoved() {
             distance = 1;
         }
         float f = 0.1f / distance;
+
+        // maximize the force to make sure no weird effect of the grass folding backwards on itself
+        if (abs(f) > 0.001f)
+        {
+            f = f > 0 ? 0.001f : -0.001f;
+        }
 
         for (Segment segment : system.segments)
         {

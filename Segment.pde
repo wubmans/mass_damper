@@ -5,35 +5,21 @@ class Segment
     float v = 0;
     float a = 0;
     
-
-    //float mass = 1;
-
-    // gears
-
-    // float springConstant = 3000;
-    // float dampingConstant = 0.01;
-
-    float springConstant = 50;
-    float dampingConstant = 0.3;
-
     float length;
 
-    void update(Segment previous, Segment next)
+    void update(Segment previous, Segment next, MSDSystem system)
     {
         float force = -F;
         float velocity = v;
-        //float a = 0;
-
-        //force = F;
 
         if (next != null)
         {
             force += next.F;
         }
 
-        force *= dampingConstant;
+        force *= system.dampingConstant;
 
-        velocity += force; /// mass;
+        velocity += force;
         v = velocity;
 
         if (previous != null)
@@ -44,9 +30,7 @@ class Segment
         a += velocity;
 
         F = velocity;
-        F += a / springConstant;
-        
-
+        F += a / system.springConstant;
 
     }
 }
